@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+				xmlns:mx="library://ns.adobe.com/flex/mx"
+				layout="absolute" width="400" height="400"
+				 backgroundAlpha="0" initialize="onInit();">
+	<fx:Script>
+		<![CDATA[
+			import flash.utils.setTimeout;
+			
+			import mx.core.UIComponent;
+			import mx.managers.LayoutManager;
+			
+			private var _container:UIComponent;
+			private var _content:*;
+			private var _test:Sprite;
+			
+			private var _themeColor:String;
+			private var _trackColors:Array;
+			private var _barColors:Array;
+			private var _scrollBorderColor:String;
+			private var _iconColor:String;
+			
+			private var _showBorder:Boolean = true;
+			private var _bordercolor:String;
+			
+			private function onInit():void
+			{
+				LayoutManager.getInstance().usePhasedInstantiation = false;
+			}
+			
+			private function onCreation():void
+			{
+				main.addEventListener(Event.ADDED, onAdded);
+				
+				/*
+				this.highLighColor("#FF0000");
+				this.trackColors('#123456', '#654321');
+				this.borderColor('#00FF00');
+				this.arrowColor('#abcdef');
+				this.barColors('#000000', '#000000');
+				
+				_test = new Sprite();
+				_test.graphics.beginFill(0x123456);
+				_test.graphics.drawRoundRect(0, 0, 700, 670, 16);
+				this.content = _test;
+				*/
+				
+			}
+			
+			public function set content(item:DisplayObject):void
+			{
+				_content = item;
+				
+				if (!_container) {
+					_container = new UIComponent();
+					main.addChild(_container);
+				}
+				
+				while (_container.numChildren > 0) {
+					_container.removeChildAt(0);
+				}
+				_container.width = _content.width;
+				_container.height = _content.height;
+				
+				_container.addChild(_content);
+			}
+			
+			public function get content():DisplayObject
+			{
+				return _content;
+			}
+			
+			public function highLighColor(value:String):void
+			{
+				_themeColor = value;
+				
+				setValue();
+			}
+			
+			public function trackColors(value:String, value2:String):void
+			{
+				_trackColors = [value, value2];
+				
+				setValue();
+			}
+			
+			public function scrollBorderColor(value:String):void
+			{
+				_scrollBorderColor = value;
+				
+				setValue();
+			}
+			
+			public function arrowColor(value:String):void
+			{
+				_iconColor = value;
+				
+				setValue();
+			}
+			
+			public function showBorder(value:Boolean):void
+			{
+				_showBorder = value;
+				setValue();
+			}
+			
+			public function borderColor(value:String):void
+			{
+				_bordercolor = value;
+				setValue();
+			}
+			
+			public function barColors(highlight:String, darker:String, highlightOnOver:String = null, darkerOnOver:String = null):void
+			{
+				
+				if (!highlightOnOver) {
+					highlightOnOver = highlight;
+				}
+				if (!darkerOnOver) {
+					darkerOnOver = darker;
+				}
+				
+				_barColors = [highlight, darker, highlightOnOver, darkerOnOver];
+				
+				setValue();
+			}
+			
+			private function onAdded(e:Event):void
+			{
+				if (e.target.name == "verticalScrollBar" || e.target.name == "horizontalScrollBar") {
+					setValue();
+				}
+			}
+			
+			private function setValue():void
+			{
+				if (_themeColor) {
+					if (main.horizontalScrollBar)
+						main.horizontalScrollBar.setStyle('themeColor', _themeColor);
+					
+					if (main.verticalScrollBar)
+						main.verticalScrollBar.setStyle('themeColor', _themeColor);
+				}
+				
+				if (_trackColors) {
+					if (main.horizontalScrollBar)
+						main.horizontalScrollBar.setStyle('trackColors', _trackColors);
+					
+					if (main.verticalScrollBar)
+						main.verticalScrollBar.setStyle('trackColors', _trackColors);
+				}
+				
+				if (_scrollBorderColor) {
+					if (main.horizontalScrollBar)
+						main.horizontalScrollBar.setStyle('borderColor', _scrollBorderColor);
+					
+					if (main.verticalScrollBar)
+						main.verticalScrollBar.setStyle('borderColor', _scrollBorderColor);
+				}
+				
+				if (_iconColor) {
+					if (main.horizontalScrollBar)
+						main.horizontalScrollBar.setStyle('iconColor', _iconColor);
+
+					if (main.verticalScrollBar)
+						main.verticalScrollBar.setStyle('iconColor', _iconColor);
+				}
+				
+				
+				if (_barColors) {
+					if (main.horizontalScrollBar)
+						main.horizontalScrollBar.setStyle('fillColors', _barColors);
+					
+					if (main.verticalScrollBar)
+						main.verticalScrollBar.setStyle('fillColors', _barColors);
+				}
+				
+				if (_bordercolor) {
+					main.setStyle('borderColor', _bordercolor);
+				}
+				
+				if (_showBorder) {
+					main.setStyle('borderStyle', 'solid');
+				} else {
+					main.setStyle('borderStyle', 'none');
+				}
+				
+			}
+		]]>
+	</fx:Script>
+	<mx:Canvas id='main' width="100%" height="100%" left="0" top="0" backgroundAlpha="0.0" creationComplete="onCreation()" borderStyle="solid" borderColor="#333333"></mx:Canvas>
+</mx:Application>

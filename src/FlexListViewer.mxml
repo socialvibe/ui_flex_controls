@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:mx="library://ns.adobe.com/flex/mx"
+				 width="400" height="100" layout="absolute"
+				 initialize="onInit()"
+				 creationComplete="onCreation()">
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayCollection;
+			import mx.managers.LayoutManager;
+			
+			private function onCreation():void
+			{
+				//Nothing
+			}
+			
+			private function onInit():void
+			{
+				LayoutManager.getInstance().usePhasedInstantiation = false;
+			}
+			
+			public function set arrayData(value:Array):void
+			{
+				
+				var data:ArrayCollection = new ArrayCollection(value);
+				MainList.dataProvider = data;
+			}
+			
+			public function get selected():Object
+			{
+				var returnObject:Object = new Object();
+				returnObject.name = MainList.selectedItem;
+				returnObject.index = MainList.selectedIndex;
+				return returnObject;
+			}
+			
+			public function get fontColor():String
+			{
+				return Number(MainList.getStyle('color')).toString(16);
+			}
+			
+			public function set fontColor(value:String):void
+			{
+				MainList.setStyle('color', value);
+			}
+			
+			public function get fontSize():Number
+			{
+				return MainList.getStyle('fontSize');
+			}
+			
+			public function set fontSize(value:Number):void
+			{
+				MainList.setStyle('fontSize', value);
+			}
+			
+			public function set selectionIndex(index:Number):void
+			{
+				MainList.selectedIndex = index;
+			}
+			public function set showBorder(value:Boolean):void
+			{
+				if (value)
+					MainList.setStyle('borderStyle', 'solid');
+				else
+					MainList.setStyle('borderStyle', 'none');	
+			}
+			
+			public function set borderWidth(value:Number):void
+			{
+				MainList.setStyle('borderThickness', value);
+			}
+			
+			public function get borderWidth():Number
+			{
+				return MainList.getStyle('borderThickness'); 
+			}
+			
+			public function set borderColor(value:String):void
+			{
+				MainList.setStyle('borderColor', value);
+			}
+			
+			public function get borderColor():String
+			{
+				return MainList.getStyle('borderColor');
+			}
+			
+			public function set rolloverColor(value:String):void
+			{
+				MainList.setStyle('rollOverColor', value);
+				MainList.setStyle('selectionColor', value);
+			}
+			
+			public function get rolloverColor():String
+			{
+				return MainList.getStyle('rollOverColor'); 
+			}
+			
+			protected function MainList_changeHandler(event:Event):void
+			{
+				this.dispatchEvent(new Event("INTERNAL_SCROLLABLE_LIST_CHANGE", true));
+			}
+		]]>
+	</fx:Script>
+	<mx:List width="100%" height="100%" id="MainList" enabled="true" change="MainList_changeHandler(event)" left="0" top="0"></mx:List>
+</mx:Application>
