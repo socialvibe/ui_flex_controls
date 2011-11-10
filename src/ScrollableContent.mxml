@@ -3,10 +3,24 @@
 				xmlns:mx="library://ns.adobe.com/flex/mx"
 				layout="absolute" width="400" height="400"
 				 backgroundAlpha="0" initialize="onInit();">
+	<fx:Style>
+		.dark {
+				track-skin: Embed(source='assets/scroll/track.png', scaleGridLeft="1", scaleGridTop="1", scaleGridRight="2", scaleGridBottom="2");
+				up-arrow-skin: ClassReference("undefined");
+				down-arrow-skin: ClassReference("undefined");
+				fixedThumbSize: true;
+				thumb-up-skin: Embed(source='assets/scroll/thumb.png', scaleGridLeft="2", scaleGridTop="3", scaleGridRight="4", scaleGridBottom="5");	
+				thumb-over-skin: Embed(source='assets/scroll/thumb.png', scaleGridLeft="2", scaleGridTop="3", scaleGridRight="4", scaleGridBottom="5");
+				thumb-down-skin: Embed(source='assets/scroll/thumb.png', scaleGridLeft="2", scaleGridTop="3", scaleGridRight="4", scaleGridBottom="5");
+				
+			}
+			
+	</fx:Style>
 	<fx:Script>
 		<![CDATA[
 			import flash.utils.setTimeout;
 			
+			import mx.controls.scrollClasses.ScrollBar;
 			import mx.core.UIComponent;
 			import mx.managers.LayoutManager;
 			
@@ -129,6 +143,7 @@
 			{
 				if (e.target.name == "verticalScrollBar" || e.target.name == "horizontalScrollBar") {
 					setValue();
+					(e.target as ScrollBar).setStyle('fixedThumbSize', 'true');
 				}
 			}
 			
@@ -188,5 +203,6 @@
 			}
 		]]>
 	</fx:Script>
-	<mx:Canvas id='main' width="100%" height="100%" left="0" top="0" backgroundAlpha="0.0" creationComplete="onCreation()" borderStyle="solid" borderColor="#333333"></mx:Canvas>
+	<mx:Canvas horizontalScrollBarStyleName="dark" verticalScrollBarStyleName="dark" id='main' width="100%" height="100%" left="0" top="0" backgroundAlpha="0.0" creationComplete="onCreation()" borderStyle="solid" borderColor="#333333">
+	</mx:Canvas>
 </mx:Application>

@@ -2,6 +2,17 @@
 <mx:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
 				xmlns:mx="library://ns.adobe.com/flex/mx"
 				layout="absolute"  initialize="onInit()" creationComplete="onCreate()" >
+	
+	<fx:Style>
+		@namespace mx "library://ns.adobe.com/flex/mx";
+		.myComboBoxDropdown {
+			dropShadowEnabled: true;
+			shadowDistance: 3;
+			shadowDirection: "right";
+			cornerRadius: 3;
+		}
+	</fx:Style>
+	
 	<fx:Script>
 		<![CDATA[
 			import mx.collections.ArrayCollection;
@@ -10,13 +21,14 @@
 			private function onInit():void
 			{
 				LayoutManager.getInstance().usePhasedInstantiation = false;
+
 			}
 			
 			
 			private function onCreate():void
 			{
-				
-				/*
+			/*
+			
 				this.arrayData = [
 					{label: 'test 1', data:'1'},
 					{label: 'test 2', data:'2'},
@@ -25,6 +37,10 @@
 					{label: 'test 5', data:'5'}
 					
 				];
+				
+				this.rollOverColor = "0x123456";
+				this.color = "#FF0000";
+				this.fontColor = '#FFFFFF';
 				*/
 			}
 			
@@ -47,8 +63,44 @@
 			{
 				this.dispatchEvent(new Event("INTERNAL_COMBO_BOX_CHANGE", true));
 			}
+			
+			public function set color(value:String):void
+			{
+				var temp:Array = [];
+				var secondColor:Number = parseInt(value.substr(1), 16);
+				secondColor -= 0x001000;
+				temp.push("0x"+secondColor.toString(16));
+				temp.push(value);
+				
+				main.setStyle('fillColors', temp);
+				styleManager.getStyleDeclaration(".myComboBoxDropdown").setStyle('backgroundColor', value);
+				styleManager.getStyleDeclaration(".myComboBoxDropdown").setStyle('borderColor', value);
+				
+			}
+			
+		
+			public function set rollOverColor(value:String):void
+			{
+				main.setStyle('rollOverColor', value);
+				main.setStyle('selectionColor', value);
+			}
+			
+			public function get rollOverColor():String
+			{
+				return main.getStyle('rollOverColor'); 
+			}
+			
+			public function set fontColor(value:String):void
+			{
+				main.setStyle('color', value);	
+			}
+			
+			public function set fontSize(value:String):void
+			{
+				main.setStyle('fontSize', value);
+			}
 		]]>
 	</fx:Script>
-	<mx:ComboBox id="main" editable="false" left="0" top="0" width="100%" height="100%" change="MainList_changeHandler(event)"></mx:ComboBox>
+	<mx:ComboBox id="main" editable="false" left="0" top="0" width="100%" height="100%" change="MainList_changeHandler(event)" dropDownStyleName="myComboBoxDropdown" ></mx:ComboBox>
 
 </mx:Application>
